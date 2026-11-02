@@ -1,0 +1,2 @@
+IMAGE                                        ID             DISK USAGE   CONTENT SIZE   EXTRA
+ghcr.io/kaszmirowymnich/llamafile-qwen:1.0   73b9867bd9df       7.72GB          3.7GB        

@@ -1,0 +1,2 @@
+$ curl http://192.168.128.2:8080/v1/chat/completions -H "Content-Type: application/json" -d '{"model":"local","messages":[{"role":"user","content":"Powiedz cześć w jednym zdaniu."}]}'
+{"choices":[{"finish_reason":"stop","index":0,"message":{"role":"assistant","content":"Cześć!"}}],"model":"/zip/Qwen3.5-4B-Q5_K_S.gguf","object":"chat.completion","usage":{"completion_tokens":5,"prompt_tokens":23,"total_tokens":28}}

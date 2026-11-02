@@ -1,0 +1,4 @@
+2026-11-02 21:25:31
+start kontenera: 2026-11-02T17:11:55.076395913Z
+llm-1  | 0.03.925.926 I srv  llama_server: listening on http://0.0.0.0:8080
+health: healthy

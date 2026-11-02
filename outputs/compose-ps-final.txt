@@ -1,0 +1,2 @@
+NAME             IMAGE                                        COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+zadanie3-llm-1   ghcr.io/kaszmirowymnich/llamafile-qwen:1.0   "sh /opt/llamafile/m…"   llm       18 seconds ago   Up 17 seconds (healthy)   192.168.128.2:8080->8080/tcp

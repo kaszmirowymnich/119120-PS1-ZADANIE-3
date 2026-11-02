@@ -1,0 +1,20 @@
+services:
+  llm:
+    image: ${REGISTRY_IMAGE}
+    build:
+      context: .
+      args:
+        LLAMAFILE_URL: ${LLAMAFILE_URL}
+        LLAMAFILE_SHA256: ${LLAMAFILE_SHA256}
+    command: ["--port", "8080", "--threads", "${THREADS}"]
+    ports:
+      - "${HOST_ONLY_ADDRESS}:${PORT}:8080"
+    restart: unless-stopped
+    mem_limit: 3g
+    cpus: 2
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s

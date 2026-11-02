@@ -1,0 +1,2 @@
+CONTAINER ID   NAME             CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O       PIDS
+1ecf0db064b8   zadanie3-llm-1   0.01%     1.897GiB / 4GiB     47.41%    4.67kB / 6.92kB   863MB / 683MB   15
