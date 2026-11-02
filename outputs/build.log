@@ -1,0 +1,43 @@
+time="2026-11-02T17:03:22Z" level=warning msg="Docker Compose is configured to build using Bake, but buildx isn't installed"
+#0 building with "default" instance using docker driver
+
+#1 [llm internal] load build definition from Dockerfile
+#1 transferring dockerfile: 767B done
+#1 DONE 0.0s
+
+#2 [llm internal] load metadata for docker.io/library/debian:trixie-slim
+#2 DONE 1.0s
+
+#3 [llm internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [llm build 1/3] FROM docker.io/library/debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4
+#4 resolve docker.io/library/debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4 done
+#4 DONE 0.0s
+
+#5 [llm stage-1 2/3] RUN useradd --system --create-home --home-dir /var/lib/llamafile       --shell /usr/sbin/nologin llamafile
+#5 CACHED
+
+#6 [llm build 2/3] RUN apt-get update  && apt-get install -y --no-install-recommends ca-certificates curl  && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [llm build 3/3] RUN curl -fsSL -o /model.llamafile "https://huggingface.co/mozilla-ai/llamafile_0.10/resolve/main/Qwen3.5-4B-Q5_K_S.llamafile"  && echo "5eb74a4b498a41a78e52ada02e74269048bb35b66b6710ba0b63a606013f4831  /model.llamafile" | sha256sum -c -  && chmod +x /model.llamafile
+#7 CACHED
+
+#8 [llm stage-1 3/3] COPY --from=build /model.llamafile /opt/llamafile/model.llamafile
+#8 CACHED
+
+#9 [llm] exporting to image
+#9 exporting layers done
+#9 exporting manifest sha256:57a199c66b3c2c8727ef570c7122feb9c1d44ed65a8c487067178c68544cbde5 done
+#9 exporting config sha256:64674194b19cf3013e6682948a0516fadba1d31d57d1e200018acc999891b8a0 done
+#9 exporting attestation manifest sha256:02c9d07ab4f43053d43d1140b248b3b83bd8aa512b8fb2bceb2360dd0804f8cf done
+#9 exporting manifest list sha256:73b9867bd9dfb6ff3a132a533a610f3802daaf44642cefe137508cc12790a306 done
+#9 naming to ghcr.io/kaszmirowymnich/llamafile-qwen:1.0 done
+#9 unpacking to ghcr.io/kaszmirowymnich/llamafile-qwen:1.0 done
+#9 DONE 0.0s
+
+#10 [llm] resolving provenance for metadata file
+#10 DONE 0.0s
+ llm  Built
