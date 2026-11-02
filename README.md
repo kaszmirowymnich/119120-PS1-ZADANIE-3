@@ -19,7 +19,7 @@ Po tym wyloguj się i zaloguj ponownie.
 2. Repozytorium i konfiguracja:
 
 ```
-git clone git@github.com:kaszmirowymnich/119120-PS1-ZADANIE-3.git && cd 119120-PS1-ZADANIE-3
+git clone https://github.com/kaszmirowymnich/119120-PS1-ZADANIE-3.git && cd 119120-PS1-ZADANIE-3
 cp .env.example .env
 nano .env
 ```
@@ -44,7 +44,7 @@ echo "$TOKEN" | docker login ghcr.io -u kaszmirowymnich --password-stdin
 docker compose push
 ```
 
-Pakiet w GHCR jest ustawiony jako publiczny.
+Pakiet w GHCR jest ustawiony jako publiczny, więc `docker compose pull` działa bez logowania.
 
 Jeśli działa stara usługa systemd z zadania 2, wyłącz ją (`sudo systemctl disable --now llamafile`), bo zajmuje ten sam adres i port.
 
@@ -108,12 +108,16 @@ services:
       start_period: 90s
 ```
 
+## Wyniki
+
 ### docker image ls
 
 ```
 IMAGE                                        ID             DISK USAGE   CONTENT SIZE   EXTRA
 ghcr.io/kaszmirowymnich/llamafile-qwen:1.0   73b9867bd9df       7.72GB          3.7GB        
 ```
+
+Rozmiar obrazu to ok. 3,7 GB (CONTENT SIZE). Kolumna DISK USAGE (7,72 GB) liczy też współdzielone warstwy lokalnego cache buildu.
 
 ### docker compose ps (healthy)
 
@@ -142,6 +146,8 @@ uid=999(llamafile) gid=999(llamafile) groups=999(llamafile)
 
 ### Restart po kill -9
 
+Proces kontenera zabito poleceniem `sudo kill -9 <PID>`. Docker uruchomił kontener ponownie (nowy PID), a po kilkudziesięciu sekundach jest `healthy`. `RestartCount` wynosi 2, bo `kill` wykonano dwukrotnie.
+
 ```
 PID przed: 104923
 NAME             IMAGE                                        COMMAND                  SERVICE   CREATED              STATUS                   PORTS
@@ -150,6 +156,8 @@ PID po: 105130, restarty: 2
 ```
 
 ### Autostart po restarcie maszyny
+
+`uptime` pokazuje `up 0 min`, a kontener wstał bez ręcznej interwencji i jest `healthy`. Wartość `Up 4 hours` to czas od utworzenia kontenera (`CREATED`), a nie od restartu systemu.
 
 ```
  21:25:55 up 0 min,  1 user,  load average: 0.19, 0.05, 0.02
@@ -162,6 +170,8 @@ zadanie3-llm-1   ghcr.io/kaszmirowymnich/llamafile-qwen:1.0   "sh /opt/llamafile
 
 ### Pamięć i limity
 
+Pierwsze dwa pomiary (po starcie i po obciążeniu) wykonano z limitem 4 GiB. Na ich podstawie obniżono limit do 3 GiB (trzeci pomiar, tuż po starcie, dlatego niskie zużycie: model jest mapowany z pliku i strony wczytują się dopiero przy zapytaniach).
+
 ```
 CONTAINER ID   NAME             CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O         PIDS
 1ecf0db064b8   zadanie3-llm-1   0.01%     1.285GiB / 4GiB     32.12%    5.06kB / 4.19kB   14.6GB / 1.07GB   15
@@ -172,6 +182,8 @@ CONTAINER ID   NAME             CPU %     MEM USAGE / LIMIT   MEM %     NET I/O 
 ```
 
 ### Zapytanie curl i odpowiedź modelu
+
+Zapytanie wykonane z gospodarza (macOS, terminal Ghostty) na adres host-only maszyny.
 
 ```
 $ curl http://192.168.128.2:8080/v1/chat/completions -H "Content-Type: application/json" -d '{"model":"local","messages":[{"role":"user","content":"Powiedz cześć w jednym zdaniu."}]}'
@@ -184,6 +196,8 @@ $ curl http://192.168.128.2:8080/v1/chat/completions -H "Content-Type: applicati
 curl -m 3 http://127.0.0.1:8080/health  -> curl: (7) Failed to connect (kod 7)
 curl -m 3 http://10.0.2.15:8080/health  -> curl: (7) Failed to connect (kod 7)
 ```
+
+Pełne wyniki poleceń są w katalogu `outputs/`.
 
 ## Porównanie: systemd vs Docker
 
